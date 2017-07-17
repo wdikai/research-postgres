@@ -1,0 +1,26 @@
+{
+  "dev": {
+    "username": "postgres",
+    "password": "root",
+    "database": "review",
+    "host": "127.0.0.1",
+    "port": "5432",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "root",
+    "database": "review",
+    "host": "127.0.0.1",
+    "port": "5432",
+    "dialect": "postgres"
+  },
+  "prod": {
+    "username": "postgres",
+    "password": "root",
+    "database": "review",
+    "host": "127.0.0.1",
+    "port": "5432",
+    "dialect": "postgres"
+  }
+}
