@@ -24,7 +24,7 @@ export default class Application {
 
             controllers: [__dirname + "/controllers/**/*.js"],
             // interceptors: [__dirname + "/interceptors/**/*.js"],
-            // middlewares: [__dirname + "/middlewares/**/*.js"]
+            middlewares: [__dirname + "/middlewares/**/*.js"]
         });
     }
 

@@ -6,7 +6,8 @@ import {
 } from 'routing-controllers';
 
 import {
-    models
+    models,
+    sequelize
 } from '../../models';
 
 @Controller('/v1/places')
@@ -14,31 +15,50 @@ export default class PlacesController {
     @Get()
     @JsonResponse()
     public async getAll(
-        @QueryParam('distance') type: string,
         @QueryParam('latitude') latitude: number = 0,
         @QueryParam('longitude') longitude: number = 0,
         @QueryParam('distance') distance: number = 1000,
+
         @QueryParam('limit') limit: number = 20,
         @QueryParam('offset') offset: number = 0,
-    ) {
-        const scopes = [{
-            method: [
-                'byLocation',
-                latitude,
-                longitude,
-                distance
-            ]
-        }];
 
-        if (type) {
+        @QueryParam('type') type ? : string,
+        @QueryParam('name') name ? : string,
+    ) {
+        let model, data;
+        const scopes = [
+            {method: ["byLocation", latitude, longitude, distance]},
+            {method: ['byType', type]}
+        ];
+        const countOptions: any = {
+            distinct: true,
+            attributes: [],
+            includeIgnoreAttributes: false
+        };
+        const getOptions: any = {
+            attributes: {include: [[
+                sequelize.fn(`ST_Distance_Sphere`, 
+                    sequelize.fn(`ST_MakePoint`, latitude, longitude), 
+                    sequelize.col("location")
+                ),
+                "distanse"
+            ]]},
+            limit,
+            offset,
+            order: 'distanse ASC'
+        };
+
+        if (name) {
             scopes.push({
-                method: ['byType', type]
+                method: ['byName', name]
             });
         }
 
-        const data = await Promise.all([
-            models.places.scope(scopes).all().map(place => ( < any > place).toJSON()),
-            models.places.scope(scopes).count(),
+        model = models.places.scope(scopes);
+
+        data = await Promise.all([
+            model.all(getOptions).map((place: any) => models.places.baseFormat(place)),
+            model.aggregate("places.id", "count", countOptions),
         ]);
 
         return {

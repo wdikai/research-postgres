@@ -15,10 +15,6 @@ export function schema(sequelize: Sequelize, dataTypes: DataTypes) {
             type: dataTypes.STRING,
             allowNull: false
         },
-        type: {
-            type: dataTypes.STRING,
-            allowNull: false
-        },
         address: {
             type: dataTypes.STRING,
             allowNull: false
@@ -27,13 +23,22 @@ export function schema(sequelize: Sequelize, dataTypes: DataTypes) {
             type: dataTypes.GEOMETRY('POINT'),
             allowNull: true
         },
+
+        openingHours: {
+            type: dataTypes.JSON,
+            allowNull: true,
+            field: 'opening_hours'
+        },
+
         createdAt: {
             type: dataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            field: 'created_at'
         },
         updatedAt: {
             type: dataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            field: 'updated_at'
         }
     };
 };

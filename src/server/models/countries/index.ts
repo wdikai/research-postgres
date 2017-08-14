@@ -1,5 +1,6 @@
 import {
     Instance,
+    Model,
     WhereGeometryOptions
 } from "sequelize";
 
@@ -15,4 +16,5 @@ export interface CountryInstance extends Instance < CountryAttributes > , Countr
     dataValues: CountryAttributes;
 }
 
-export type CountryInstancesWithCount = [CountryInstance[], number];
+
+export interface CountryModel extends Model < CountryInstance, CountryAttributes > {}

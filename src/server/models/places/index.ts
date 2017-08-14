@@ -7,9 +7,9 @@ import {
 export interface PlaceAttributes {
     id ? : number;
     name: string;
-    type: string;
     address: string;
     location: WhereGeometryOptions;
+    openingHours ? : any;
     distance ? : number;
     createdAt: number;
     updatedAt: number;
@@ -17,9 +17,9 @@ export interface PlaceAttributes {
 
 export interface PlaceInstance extends Instance < PlaceAttributes > , PlaceAttributes {
     dataValues: PlaceAttributes;
+    addTypes(types: any[], options?: any): Promise < any > ;
 }
 
-
-export interface PlaceModel extends Model < PlaceInstance, PlaceAttributes > {}
-
-export type PlaceInstancesWithCount = [PlaceInstance[], number];
+export interface PlaceModel extends Model < PlaceInstance, PlaceAttributes > {
+    baseFormat(place: PlaceInstance): any,
+}

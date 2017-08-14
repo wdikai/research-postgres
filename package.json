@@ -28,6 +28,7 @@
     "@types/passport": "^0.3.3",
     "@types/passport-jwt": "^2.0.19",
     "@types/sequelize": "^4.0.41",
+    "node-googleplaces": "^0.1.2",
     "sequelize-cli": "^2.7.0",
     "typescript": "^2.1.6"
   },
@@ -44,7 +45,7 @@
     "pg": "^6.4.1",
     "reflect-metadata": "^0.1.9",
     "routing-controllers": "^0.6.10",
-    "sequelize": "^4.3.2",
+    "sequelize": "^3.30.4",
     "typedi": "^0.4.3"
   }
 }

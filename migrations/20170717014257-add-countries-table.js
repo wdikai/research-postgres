@@ -1,15 +1,13 @@
-'use strict';
-
 module.exports = {
   up: function (queryInterface, Sequelize) {
     return queryInterface.sequelize.query(
-      `CREATE TABLE public.countries
+      `CREATE TABLE IF NOT EXISTS public.countries
       (
           "id" serial NOT NULL,
           "name" character varying(100) NOT NULL,
           "border" geometry NULL,
-          "createdAt" integer NOT NULL,
-          "updatedAt" integer NOT NULL,
+          "created_at" integer NOT NULL,
+          "updated_at" integer NOT NULL,
           PRIMARY KEY ("id")
       )`
     );
@@ -17,7 +15,7 @@ module.exports = {
 
   down: function (queryInterface, Sequelize) {
     return queryInterface.sequelize.query(
-      `DROP TABLE public.countries;`
-    );
+      `DROP TABLE IF EXISTS public.countries;`
+    ); 
   }
 };

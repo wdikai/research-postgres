@@ -11,24 +11,15 @@ export function schema(sequelize: Sequelize, dataTypes: DataTypes) {
             autoIncrement: true,
             primaryKey: true
         },
-        name: {
-            type: dataTypes.STRING,
-            allowNull: false
-        },
-        border: {
-            type: dataTypes.GEOMETRY('POLYGON'),
-            allowNull: true
-        },
-        
-        createdAt: {
+        placeId: {
             type: dataTypes.INTEGER,
             allowNull: false,
-            field: 'created_at'
+            field: 'place_id'
         },
-        updatedAt: {
+        typeId: {
             type: dataTypes.INTEGER,
             allowNull: false,
-            field: 'updated_at'
+            field: 'type_id'
         }
     };
 };
