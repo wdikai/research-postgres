@@ -21,5 +21,5 @@ export interface PlaceInstance extends Instance < PlaceAttributes > , PlaceAttri
 }
 
 export interface PlaceModel extends Model < PlaceInstance, PlaceAttributes > {
-    baseFormat(place: PlaceInstance): any,
+    baseFormat(place: any, date?: any): any,
 }

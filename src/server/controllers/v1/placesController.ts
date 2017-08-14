@@ -2,13 +2,19 @@ import {
     Controller,
     JsonResponse,
     Get,
-    QueryParam
+    QueryParam,
+    Param
 } from 'routing-controllers';
 
 import {
     models,
     sequelize
 } from '../../models';
+
+import {
+    HttpError
+} from '../../utils/httpError';
+
 
 @Controller('/v1/places')
 export default class PlacesController {
@@ -26,9 +32,12 @@ export default class PlacesController {
         @QueryParam('name') name ? : string,
     ) {
         let model, data;
-        const scopes = [
-            {method: ["byLocation", latitude, longitude, distance]},
-            {method: ['byType', type]}
+        const scopes = [{
+                method: ["byLocation", latitude, longitude, distance]
+            },
+            {
+                method: ['byType', type]
+            }
         ];
         const countOptions: any = {
             distinct: true,
@@ -36,13 +45,17 @@ export default class PlacesController {
             includeIgnoreAttributes: false
         };
         const getOptions: any = {
-            attributes: {include: [[
-                sequelize.fn(`ST_Distance_Sphere`, 
-                    sequelize.fn(`ST_MakePoint`, latitude, longitude), 
-                    sequelize.col("location")
-                ),
-                "distanse"
-            ]]},
+            attributes: {
+                include: [
+                    [
+                        sequelize.fn(`ST_Distance_Sphere`,
+                            sequelize.fn(`ST_MakePoint`, latitude, longitude),
+                            sequelize.col("location")
+                        ),
+                        "distanse"
+                    ]
+                ]
+            },
             limit,
             offset,
             order: 'distanse ASC'
@@ -64,6 +77,28 @@ export default class PlacesController {
         return {
             data: data[0],
             count: data[1]
+        };
+    }
+
+    @Get("/:placeId")
+    @JsonResponse()
+    public async getOne(
+        @Param('placeId') placeId: number,
+        @QueryParam('date') date: string,
+    ) {
+        let data;
+        const scopes = [{
+            method: ['byType']
+        }];
+
+        data = await models.places.scope(scopes).findById(placeId);
+
+        if (!data) {
+            throw new HttpError("Place not found", 404)
+        }
+
+        return {
+            data: models.places.baseFormat(data, date)
         };
     }
 

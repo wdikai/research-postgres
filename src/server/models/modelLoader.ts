@@ -17,7 +17,7 @@ export interface SequelizeModels {
     typesByPlaces: TypesByPlacesModel;
 }
 
-export class Bootsrapper {
+export class ModelLoader {
     private _basename: string;
     private _models: SequelizeModels;
     private _sequelize: Sequelize;

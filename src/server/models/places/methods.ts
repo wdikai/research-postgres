@@ -1,6 +1,12 @@
 import {
     SequelizeModels
 } from "../bootstrapper";
+import * as moment from "moment";
+
+import {
+    Moment
+} from "moment";
+
 
 const scopes: any = {
     byLocation(latitude: number, longitude: number, distance: number) {
@@ -29,7 +35,7 @@ const scopes: any = {
     }
 }
 
-function baseFormat(instance: any): any {
+function baseFormat(instance: any, date: string): any {
     return {
         id: instance.id,
         name: instance.name,
@@ -40,11 +46,42 @@ function baseFormat(instance: any): any {
             longitude: instance.location.coordinates[1],
         },
         openingHours: instance.openingHours,
+        isOpen: date && checkOpen(instance.openingHours, date),
         distance: instance.distance,
 
         createdAt: instance.createdAt,
         updatedAt: instance.updatedAt,
     };
+}
+
+function checkOpen(workSchedule ? : any, date ? : string ) {
+    console.log(moment().format())
+    let checkDate, checkDateDay, checkDateDayNumber, openAt, closeAt;
+    if (!workSchedule || !date) {
+        return false;
+    }
+
+    checkDate = moment(date).utc();
+    checkDateDayNumber = checkDate.isoWeekday();
+    checkDateDay = workSchedule.openingHours[checkDateDayNumber];
+
+    if (!checkDateDay) {
+        return false;
+    }
+
+    checkDate = checkDate.utcOffset(workSchedule.timeZoneOffset);
+    openAt = moment(checkDateDay.openAt, "HH:mm").utc().utcOffset(workSchedule.timeZoneOffset);
+    closeAt = moment(checkDateDay.closeAt, "HH:mm").utc().utcOffset(workSchedule.timeZoneOffset);
+
+    return timeLessThenEqual(openAt, checkDate) && timeGreateThenEqual(closeAt, checkDate);
+
+    function timeLessThenEqual(first: Moment, second: Moment) {
+        return first.hours() < second.hours() || first.hours() === second.hours() && first.minutes() <= second.minutes();
+    }
+
+    function timeGreateThenEqual(first: Moment, second: Moment) {
+        return first.hours() > second.hours() || first.hours() === second.hours() && first.minutes() >= second.minutes();
+    }
 }
 
 function associate(models: SequelizeModels) {
@@ -53,7 +90,7 @@ function associate(models: SequelizeModels) {
         foreignKey: "placeId",
         otherKey: "typeId",
         as: "types"
-    })
+    });
 }
 
 export const methods: any = {
