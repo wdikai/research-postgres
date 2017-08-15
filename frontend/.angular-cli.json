@@ -1,0 +1,46 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "name": "map"
+  },
+  "apps": [{
+    "root": "src",
+    "outDir": "dist",
+    "assets": [
+      "assets",
+      "favicon.ico"
+    ],
+    "index": "index.html",
+    "main": "main.ts",
+    "polyfills": "polyfills.ts",
+    "test": "test.ts",
+    "tsconfig": "tsconfig.json",
+    "prefix": "app",
+    "styles": [
+      "../node_modules/font-awesome/css/font-awesome.css",
+      "../node_modules/bootstrap/dist/css/bootstrap.css",
+      "../node_modules/angular2-toaster/toaster.css",
+      "assets/styles/styles.css",
+      "assets/styles/custom.css"
+    ],
+    "scripts": [
+      "../node_modules/jquery/dist/jquery.js",
+      "../node_modules/metismenu/dist/metisMenu.js",
+      "../node_modules/bootstrap/dist/js/bootstrap.js",
+      "../node_modules/ng2-validation/bundles/ng2-validation.umd.js",
+      "vendor/pace/pace.min.js"
+    ],
+    "environmentSource": "environments/environment.ts",
+    "environments": {
+      "dev": "environments/environment.ts",
+      "prod": "environments/environment.prod.ts"
+    }
+  }],
+  "e2e": {},
+  "lint": [],
+  "test": {},
+  "defaults": {
+    "styleExt": "css",
+    "component": {}
+  }
+}
