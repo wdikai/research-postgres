@@ -37,7 +37,7 @@ module.exports = {
         `INSERT INTO "places" 
         ("id","name","address","location","opening_hours","created_at","updated_at")
         VALUES 
-        (DEFAULT,'Cleveroad','вулиця Трінклера, 9, Харків',ST_GeomFromGeoJSON('{"type":"Point","coordinates":[50.012619, 36.239189]}'),'{"timeZoneOffset":-180,"openingHours":{"1":{"openAt":"09:00","closeAt":"20:00"},"2":{"openAt":"09:00","closeAt":"20:00"},"3":{"openAt":"09:00","closeAt":"20:00"},"4":{"openAt":"09:00","closeAt":"20:00"},"5":{"openAt":"09:00","closeAt":"20:00"},"6":null,"7":null}}',0,0);`
+        (DEFAULT,'Cleveroad','вулиця Трінклера, 9, Харків',ST_GeomFromGeoJSON('{"type":"Point","coordinates":[50.012619, 36.239189]}'),'{"timeZoneOffset":-180,"workShedule":{"1":{"openAt":"09:00","closeAt":"20:00"},"2":{"openAt":"09:00","closeAt":"20:00"},"3":{"openAt":"09:00","closeAt":"20:00"},"4":{"openAt":"09:00","closeAt":"20:00"},"5":{"openAt":"09:00","closeAt":"20:00"},"6":null,"7":null}}',0,0);`
       ))
       .then(() => queryInterface.sequelize.query(
         `INSERT INTO "types" 

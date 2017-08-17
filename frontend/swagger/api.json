@@ -1,0 +1,197 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "Api"
+  },
+  "basePath": "/",
+  "tags": [],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/v1/countries": {
+      "get": {
+        "tags": [
+          "countries"
+        ],
+        "summary": "get countries",
+        "operationId": "getCountries",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+            "$ref": "#/definitions/Limit"
+          },
+          {
+            "$ref": "#/definitions/Offset"
+          },
+          {
+            "$ref": "#/definitions/Page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful response"
+          }
+        }
+      }
+    },
+    "/api/v1/countries/current": {
+      "get": {
+        "tags": [
+          "countries"
+        ],
+        "summary": "get current cetCountry",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+            "type": "string",
+            "name": "latitude",
+            "required": false,
+            "in": "query"
+          }, {
+            "type": "string",
+            "name": "longitude",
+            "required": false,
+            "in": "query"
+          }],
+        "responses": {
+          "200": {
+            "description": "successful response"
+          }
+        }
+      }
+    },
+    "/api/v1/places": {
+      "get": {
+        "tags": [
+          "places"
+        ],
+        "summary": "get olaces",
+        "operationId": "getPlaces",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+            "type": "string",
+            "name": "name",
+            "required": false,
+            "in": "query"
+          }, {
+            "type": "string",
+            "name": "type",
+            "required": false,
+            "in": "query"
+          }, {
+            "type": "string",
+            "name": "latitude",
+            "required": false,
+            "in": "query"
+          }, {
+            "type": "string",
+            "name": "longitude",
+            "required": false,
+            "in": "query"
+          }, {
+            "type": "string",
+            "name": "distance",
+            "required": false,
+            "in": "query"
+          },
+          {
+            "$ref": "#/definitions/Limit"
+          },
+          {
+            "$ref": "#/definitions/Offset"
+          },
+          {
+            "$ref": "#/definitions/Page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful response"
+          }
+        }
+      }
+    },
+    "/api/v1/places/{placeId}": {
+      "get": {
+        "tags": [
+          "places"
+        ],
+        "summary": "get place",
+        "operationId": "getPlace",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+          "type": "string",
+          "name": "placeId",
+          "required": false,
+          "in": "params"
+        }],
+        "responses": {
+          "200": {
+            "description": "successful response"
+          }
+        }
+      }
+    },
+    "/api/v1/types": {
+      "get": {
+        "tags": [
+          "places"
+        ],
+        "summary": "get place types",
+        "operationId": "getTypes",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful response"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Limit": {
+      "type": "integer",
+      "name": "limit",
+      "required": false,
+      "in": "query"
+    },
+    "Offset": {
+      "type": "integer",
+      "name": "offset",
+      "required": false,
+      "in": "query"
+    },
+    "Page": {
+      "type": "integer",
+      "name": "page",
+      "required": false,
+      "in": "query"
+    }
+  }
+}

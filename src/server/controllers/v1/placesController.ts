@@ -1,5 +1,5 @@
 import {
-    Controller,
+    JsonController,
     JsonResponse,
     Get,
     QueryParam,
@@ -16,9 +16,9 @@ import {
 } from '../../utils/httpError';
 
 
-@Controller('/v1/places')
+@JsonController()
 export default class PlacesController {
-    @Get()
+    @Get('/v1/places')
     @JsonResponse()
     public async getAll(
         @QueryParam('latitude') latitude: number = 0,
@@ -36,7 +36,7 @@ export default class PlacesController {
                 method: ["byLocation", latitude, longitude, distance]
             },
             {
-                method: ['byType', type]
+                method: ['withType', type]
             }
         ];
         const countOptions: any = {
@@ -80,7 +80,7 @@ export default class PlacesController {
         };
     }
 
-    @Get("/:placeId")
+    @Get("/v1/places/:placeId")
     @JsonResponse()
     public async getOne(
         @Param('placeId') placeId: number,
@@ -88,7 +88,7 @@ export default class PlacesController {
     ) {
         let data;
         const scopes = [{
-            method: ['byType']
+            method: ['withType']
         }];
 
         data = await models.places.scope(scopes).findById(placeId);
@@ -100,6 +100,14 @@ export default class PlacesController {
         return {
             data: models.places.baseFormat(data, date)
         };
+    }
+
+    @Get("/v1/types")
+    @JsonResponse()
+    public async getTypes() {
+        const types = await models.types.all();
+
+        return {data: types.map(type => type.type)};
     }
 
 }

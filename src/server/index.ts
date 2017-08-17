@@ -3,6 +3,7 @@ import { useContainer, useExpressServer } from 'routing-controllers';
 import { Container } from "typedi";
 import { Express } from "express";
 import * as express from "express";
+import * as path from "path";
 import * as bodyParser from "body-parser";
 import * as cors from "cors";
 
@@ -24,7 +25,6 @@ export default class Application {
             defaultErrorHandler: false,
 
             controllers: [__dirname + "/controllers/**/*.js"],
-            // interceptors: [__dirname + "/interceptors/**/*.js"],
             middlewares: [__dirname + "/middlewares/**/*.js"]
         });
     }
@@ -33,6 +33,7 @@ export default class Application {
 
     private _glabalConfigure(app: Express) {
         app.use(cors());
+        app.use('/swagger', express.static(path.resolve('frontend/swagger')));
         app.use(bodyParser.json({ limit: '50mb' }));
         app.use(bodyParser.raw({ limit: '50mb' }));
         app.use(bodyParser.urlencoded({ extended: true }));

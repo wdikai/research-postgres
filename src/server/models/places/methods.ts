@@ -18,12 +18,14 @@ const scopes: any = {
             }
         }
     },
-    byType(type: string): any {
+    withType(type: string): any {
         return {
+            subQuery: !type,
             include: [{
                 model: this.sequelize.models.types,
                 as: "types",
-                required: true
+                required: true,
+                where: type ? {type}: {}
             }]
         };
     },
