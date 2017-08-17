@@ -2,7 +2,9 @@ import * as bluebird from "bluebird";
 import * as asyncModule from "async";
 import * as moment from "moment";
 
-import { models } from '../server/models';
+import {
+    models
+} from '../server/models';
 
 const types = [
     'bank',

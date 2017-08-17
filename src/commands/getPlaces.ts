@@ -12,7 +12,6 @@ const apiKey = "AIzaSyDk4C89ZwWn71OVonWYynzYXWOao4m8yas";
 const api = new GooglePlaces(apiKey);
 const defaultOptions = {
     languige: 'en',
-    location: "49.9935, 36.2304",
     radius: 50000
 };
 const defaultLimit = 20;
@@ -32,7 +31,7 @@ const types = [
 class PlacesLoader {
     placesMap: Map < string, any > ;
 
-    public loadBy(types: string[]) {
+    public loadBy(types: string[], location: string) {
         if (this.placesMap) {
             return Promise.reject(new Error('Loader already started!'))
         }
@@ -42,7 +41,7 @@ class PlacesLoader {
             asyncModule.eachSeries(
                 types,
                 (type: string, cb: any) => {
-                    this.load(type)
+                    this.load(location, type)
                         .then((places: Map < string, any > ) => places.forEach((value: any, key: string) => this.addPlace(value)))
                         .then(() => cb())
                         .catch(cb);
@@ -88,7 +87,7 @@ class PlacesLoader {
         }
     }
 
-    private load(type: string, places = new Map(), nextPageToken ? : string) {
+    private load(location: string,type: string, places = new Map(), nextPageToken ? : string) {
         return new Promise((resolve: Function, reject: Function) => {
             const params = Object.assign({
                 type,
@@ -114,7 +113,7 @@ class PlacesLoader {
                     return resolve(places);
                 }
 
-                this.load(type, places, res.body.next_page_token)
+                this.load(location, type, places, res.body.next_page_token)
                     .then((result) => resolve(result))
                     .catch((error) => reject(error));
             });
@@ -147,9 +146,12 @@ class PlacesLoader {
     }
 }
 
+
+
+const locations = ['50.04038383847727, 36.20338439941406', '50.02009371923324, 36.334877014160156', '49.9604971276, 36.26861572265625'];
+
 console.log("Start grab");
 const loader = new PlacesLoader();
-loader
-    .loadBy(types)
-    .then(() => console.log("Compleate grab", loader.placesMap.size))
+Promise.all([locations.map(location =>  loader.loadBy(types, location))])
+    .then(() => loader.save())
     .catch(error => console.error("Error:", error));

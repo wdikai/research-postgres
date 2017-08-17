@@ -1,6 +1,6 @@
 import {
     SequelizeModels
-} from "../bootstrapper";
+} from "../modelLoader";
 import * as moment from "moment";
 
 import {
@@ -11,16 +11,19 @@ import {
 const scopes: any = {
     byLocation(latitude: number, longitude: number, distance: number) {
         return {
-            $or: [
-                this.sequelize.literal(`(ST_Distance_Sphere(ST_MakePoint(${latitude}, ${longitude}), "location") <= ${distance})`)
-            ]
+            where: {
+                $or: [
+                    this.sequelize.literal(`(ST_Distance_Sphere(ST_MakePoint(${latitude}, ${longitude}), "location") <= ${distance})`)
+                ]
+            }
         }
     },
     byType(type: string): any {
         return {
             include: [{
                 model: this.sequelize.models.types,
-                as: "types"
+                as: "types",
+                required: true
             }]
         };
     },
@@ -47,14 +50,14 @@ function baseFormat(instance: any, date: string): any {
         },
         openingHours: instance.openingHours,
         isOpen: date && checkOpen(instance.openingHours, date),
-        distance: instance.distance,
+        distance: instance.dataValues.distance,
 
         createdAt: instance.createdAt,
         updatedAt: instance.updatedAt,
     };
 }
 
-function checkOpen(workSchedule ? : any, date ? : string ) {
+function checkOpen(workSchedule ? : any, date ? : string) {
     console.log(moment().format())
     let checkDate, checkDateDay, checkDateDayNumber, openAt, closeAt;
     if (!workSchedule || !date) {

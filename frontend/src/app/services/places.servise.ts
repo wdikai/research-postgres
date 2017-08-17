@@ -33,4 +33,22 @@ export class PlaceService extends BaseCRUD<Place, any, any> {
 
         return Observable.fromPromise(this.localPlaceService.getAll(filters))
     }
+
+    getMyLocation() {
+        return new Promise((resolve, reject) => {
+            if (window.navigator && window.navigator.geolocation) {
+                window.navigator.geolocation
+                    .getCurrentPosition((result) => {
+                            resolve({
+                                latitude: result.coords.latitude,
+                                longitude: result.coords.longitude
+                            });
+                        },
+                        reject
+                    );
+            } else {
+                reject();
+            }
+        });
+}
 }

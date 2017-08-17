@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { SessionService } from '../../../services/session.service';
-
 declare var jQuery: any;
 
 @Component({
@@ -11,7 +9,7 @@ declare var jQuery: any;
 
 export class NavigationComponent {
 
-    constructor(private router: Router, private sessionService: SessionService) { }
+    constructor(private router: Router) { }
 
     ngAfterViewInit() {
         jQuery('#side-menu').metisMenu();
@@ -19,12 +17,6 @@ export class NavigationComponent {
 
     activeRoute(routename: string): boolean {
         return this.router.url.indexOf(routename) > -1;
-    }
-
-    logout() {
-        this.sessionService
-            .logout()
-            .subscribe(() => this.router.navigate(['/login']));
     }
 
 }

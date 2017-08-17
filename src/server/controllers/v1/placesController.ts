@@ -52,16 +52,16 @@ export default class PlacesController {
                             sequelize.fn(`ST_MakePoint`, latitude, longitude),
                             sequelize.col("location")
                         ),
-                        "distanse"
+                        "distance"
                     ]
                 ]
             },
             limit,
             offset,
-            order: 'distanse ASC'
+            order: 'distance ASC'
         };
 
-        if (name) {
+        if (name && name.length > 3) {
             scopes.push({
                 method: ['byName', name]
             });

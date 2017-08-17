@@ -4,6 +4,7 @@ import { Container } from "typedi";
 import { Express } from "express";
 import * as express from "express";
 import * as bodyParser from "body-parser";
+import * as cors from "cors";
 
 useContainer(Container);
 
@@ -31,6 +32,7 @@ export default class Application {
     public get handler() { return this._handler; }
 
     private _glabalConfigure(app: Express) {
+        app.use(cors());
         app.use(bodyParser.json({ limit: '50mb' }));
         app.use(bodyParser.raw({ limit: '50mb' }));
         app.use(bodyParser.urlencoded({ extended: true }));

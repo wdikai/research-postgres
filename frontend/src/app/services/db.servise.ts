@@ -3,7 +3,7 @@ export const PLACES_STORE_NAME = "places";
 export class DBService {
   static open() {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open("places", 1);
+      const request = indexedDB.open("places", 2);
 
       request.onsuccess = (event) => resolve(request.result);
       request.onerror = (event) => reject(request.error);
@@ -21,4 +21,9 @@ export class DBService {
       };
     });
   }
+}
+
+export enum TransactionType {
+  ReadOnly = "readonly",
+  ReadWrite = "readwrite"
 }

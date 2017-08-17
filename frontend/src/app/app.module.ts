@@ -10,7 +10,7 @@ import { ROUTES } from "./app.routes";
 import { AppComponent } from './app.component';
 
 // App views
-import { DashboardModule } from "./views/dashboard/dashboard.module";
+import { MapModule } from "./views/map/map.module";
 
 // App modules/components
 import { LayoutsModule } from "./components/common/layouts/layouts.module";
@@ -29,10 +29,7 @@ import { HttpInterceptor } from './services/http.service';
     CustomFormsModule,
 
     // Views
-    DashboardModule,
-    LoginModule,
-    ProfileModule,
-
+    MapModule,
     // Modules
     LayoutsModule,
 
@@ -44,10 +41,7 @@ import { HttpInterceptor } from './services/http.service';
       provide: Http,
       useFactory: HttpInterceptor.httpFactory,
       deps: [XHRBackend, RequestOptions, Router, Injector]
-    },
-    SessionService,
-    AdminService,
-    OnlyAuthoryzed
+    }
   ],
   bootstrap: [AppComponent]
 })

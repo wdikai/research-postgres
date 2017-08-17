@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 
 import { ResponseContainer, Dictionary, Mode } from '../models/base.model';
 import { Place, Location } from '../models/place.model';
-import { DBService, PLACES_STORE_NAME } from './db.servise';
+import { DBService, PLACES_STORE_NAME , TransactionType} from './db.servise';
 
 @Injectable()
 export class LocalPlaceService {
@@ -18,7 +18,7 @@ export class LocalPlaceService {
         return DBService
             .open()
             .then((db: IDBDatabase) => {
-                const transaction = db.transaction([PLACES_STORE_NAME], <any>IDBTransaction.READ_ONLY);
+                const transaction = db.transaction([PLACES_STORE_NAME], TransactionType.ReadOnly);
 
                 return new Promise((resolve, reject) => {
                     const result = [];
@@ -54,7 +54,7 @@ export class LocalPlaceService {
         return DBService
             .open()
             .then((db: IDBDatabase) => {
-                const transaction = db.transaction([PLACES_STORE_NAME], <any>IDBTransaction.READ_WRITE);
+                const transaction = db.transaction([PLACES_STORE_NAME], TransactionType.ReadWrite);
 
                 return new Promise((resolve, reject) => {
                     const request = transaction
