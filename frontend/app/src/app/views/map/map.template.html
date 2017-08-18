@@ -1,16 +1,35 @@
 <div class="wrapper wrapper-content animated fadeInRight  full-heighth">
 
   <div class="row">
-    <div class="col-xs-4">
+    <div class="col-xs-3">
+      <label for="name">Search:</label>
       <input type="text" class="form-control" name="name" [(ngModel)]="name" (change)="loadPlaces()" placeholder="Search">
     </div>
-    <div class="col-xs-4">
-      <input type="number" class="form-control" name="name" [(ngModel)]="mapSearchConfig.distance" (change)="loadPlaces()" placeholder="Search">
+    <div class="col-xs-3">
+      <label for="distance">Distance:</label>
+      <input type="number" class="form-control" name="distance" [(ngModel)]="mapSearchConfig.distance" (change)="loadPlaces()"
+        placeholder="Search">
     </div>
-    <div class="col-xs-4">
-      <select>
-        <option value>All</option>
+    <div class="col-xs-3">
+      <label for="type">Type:</label>
+      <select class="form-control" name="type" [(ngModel)]="type" style="min-width: 100%" (change)="loadPlaces()">
+        <option [value]="''">All</option>
+        <option *ngFor="let placeType of types" [value]="placeType">{{placeType}}</option>
       </select>
+    </div>
+    <div class="col-xs-3">
+      <label for="limit">Count:</label>
+      <select class="form-control" name="limit" [(ngModel)]="limit" style="min-width: 100%" (change)="loadPlaces()">
+        <option [value]="">10</option>
+        <option [value]="">20</option>
+        <option [value]="">50</option>
+        <option [value]="">100</option>
+        <option [value]="">200</option>
+      </select>
+    </div>
+
+    <div class="col-xs-3  m-t-md">
+      <button class="btn btn-default" type="button" (click)="toogleMode()">{{toogleStatus}}</button>
     </div>
   </div>
 
@@ -19,13 +38,31 @@
       <h1>{{ title }}</h1>
       <agm-map [latitude]="mapSearchConfig.latitude" [longitude]="mapSearchConfig.longitude" [zoom]="mapConfig.zoom" [clickableIcons]="mapConfig.clickableIcons"
         [disableDefaultUI]="mapConfig.disableDefaultUI" [disableDoubleClickZoom]="mapConfig.disableDoubleClickZoom" (mapClick)="onMapClick($event)">
-        <agm-circle [latitude]="mapSearchConfig.latitude" [longitude]="mapSearchConfig.longitude" [radius]="mapSearchConfig.distance" [clickable]="false"></agm-circle>
-        <agm-marker [latitude]="mapSearchConfig.latitude" [longitude]="mapSearchConfig.longitude" [iconUrl]="'assets/img/pin.svg'"></agm-marker>
+
+        <agm-marker [latitude]="mapSearchConfig.latitude" [longitude]="mapSearchConfig.longitude" [iconUrl]="'assets/img/user-pin.png'">
+          <agm-info-window>
+            You located in {{country?.name}}
+          </agm-info-window>
+        </agm-marker>
         <agm-marker *ngFor="let place of places;" [latitude]="place.location.latitude" [title]="place.name" [longitude]="place.location.longitude">
           <agm-info-window>
             <h3>{{ place.name }}</h3>
-            <section>Distance: {{ (place.distance).toFixed(2) }} m.</section>
-            <section>Distance: {{ (place.distance).toFixed(2) }} m.</section>
+            <p>Distance: {{ (place.distance).toFixed(2) }} m.</p>
+            <p *ngIf="place.isOpen">Open now</p>
+            <section *ngIf="place.openingHours">
+              <form>
+                <input type="date" name="date" [(ngModel)]="date.date" class="form-control">
+                <input type="time" name="time" [(ngModel)]="date.time" class="form-control">
+                <select class="form-control" name="timezone" [(ngModel)]="date.timezone">
+                  <option *ngFor="let zone of timezones" [value]="zone">{{zone}}</option>
+                </select>
+                <button class="btn btn-default" (click)="getPlaceDetail(place)">Detail</button>
+              </form>
+              <hr>
+              <p *ngFor="let dayNumber of (place.openingHours.workSchedule | keys)">
+                {{dayNumber | weekDay}}: {{place.openingHours.workSchedule[dayNumber] | workTime}}
+              </p>
+            </section>
           </agm-info-window>
         </agm-marker>
       </agm-map>

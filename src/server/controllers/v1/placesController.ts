@@ -4,43 +4,43 @@ import {
     Get,
     QueryParam,
     Param
-} from 'routing-controllers';
+} from "routing-controllers";
 
 import {
     models,
     sequelize
-} from '../../models';
+} from "../../models";
 
 import {
     HttpError
-} from '../../utils/httpError';
+} from "../../utils/httpError";
 
 
 @JsonController()
 export default class PlacesController {
-    @Get('/v1/places')
+    @Get("/v1/places")
     @JsonResponse()
     public async getAll(
-        @QueryParam('latitude') latitude: number = 0,
-        @QueryParam('longitude') longitude: number = 0,
-        @QueryParam('distance') distance: number = 1000,
+        @QueryParam("latitude") latitude: number = 0,
+        @QueryParam("longitude") longitude: number = 0,
+        @QueryParam("distance") distance: number = 1000,
 
-        @QueryParam('limit') limit: number = 20,
-        @QueryParam('offset') offset: number = 0,
+        @QueryParam("limit") limit: number = 20,
+        @QueryParam("offset") offset: number = 0,
 
-        @QueryParam('type') type ? : string,
-        @QueryParam('name') name ? : string,
+        @QueryParam("type") type ? : string,
+        @QueryParam("name") name ? : string,
     ) {
         let model, data;
         const scopes = [{
                 method: ["byLocation", latitude, longitude, distance]
             },
             {
-                method: ['withType', type]
+                method: ["withType", type]
             }
         ];
         const countOptions: any = {
-            distinct: true,
+            subQuery:false,
             attributes: [],
             includeIgnoreAttributes: false
         };
@@ -58,12 +58,12 @@ export default class PlacesController {
             },
             limit,
             offset,
-            order: 'distance ASC'
+            order: "distance ASC"
         };
 
         if (name && name.length > 3) {
             scopes.push({
-                method: ['byName', name]
+                method: ["byName", name]
             });
         }
 
@@ -71,7 +71,7 @@ export default class PlacesController {
 
         data = await Promise.all([
             model.all(getOptions).map((place: any) => models.places.baseFormat(place)),
-            model.aggregate("places.id", "count", countOptions),
+            model.count(countOptions),
         ]);
 
         return {
@@ -83,12 +83,12 @@ export default class PlacesController {
     @Get("/v1/places/:placeId")
     @JsonResponse()
     public async getOne(
-        @Param('placeId') placeId: number,
-        @QueryParam('date') date: string,
+        @Param("placeId") placeId: number,
+        @QueryParam("date") date: number,
     ) {
         let data;
         const scopes = [{
-            method: ['withType']
+            method: ["withType"]
         }];
 
         data = await models.places.scope(scopes).findById(placeId);

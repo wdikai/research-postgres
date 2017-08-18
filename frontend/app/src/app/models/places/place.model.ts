@@ -1,3 +1,5 @@
+import {LocationData} from "../location/location.model";
+
 export enum Days {
   Monday = 1,
     Tuesday = 2,
@@ -11,10 +13,10 @@ export enum Days {
 export interface Place {
   id: number;
   name: string;
-  type: string[];
+  types: string[];
   address: string;
   openingHours?: OpeningHours;
-  location: Location;
+  location: LocationData;
   distance?: number;
   isOpen?: boolean;
   createdAt: number;
@@ -33,9 +35,4 @@ export interface WorkSchedule {
 export interface WorkPeriod {
   openAt: string;
   closeAt: string;
-}
-
-export interface Location {
-  latitude: number;
-  longitude: number;
 }

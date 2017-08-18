@@ -1,27 +1,27 @@
-import { Injectable } from '@angular/core';
-import { Http, Headers, Response, URLSearchParams } from '@angular/http';
-import { Observable } from 'rxjs';
-import 'rxjs/add/operator/map';
+import { Injectable } from "@angular/core";
+import { Http, Headers, Response, URLSearchParams } from "@angular/http";
+import { Observable } from "rxjs";
+import "rxjs/add/operator/map";
 
-import { ResponseContainer, Dictionary } from '../models/base.model';
+import { ResponseContainer, Dictionary } from "../models/base.model";
 
 @Injectable()
 export class BaseCRUD<BaseModel, CreateBody, UpdateBody> {
     protected http: Http;
     protected url: string;
 
-    constructor(http: Http, resourse: string = '', version: string = 'v1') {
+    constructor(http: Http, resourse: string = "", version: string = "v1") {
         this.http = http;
         this.url = `/api/${version}/${resourse}`;
     }
 
-    getAll(filters: Dictionary<any>): Observable<ResponseContainer<BaseModel[]>> {
+    getAll(filters?: Dictionary<any>): Observable<ResponseContainer<BaseModel[]>> {
         return this.http
             .get(this.url, {params: filters})
             .map((response: Response) => response.json());
     }
 
-    getOne(id: number, params: Dictionary<any>): Observable<ResponseContainer<BaseModel>> {
+    getOne(id: number | string, params?: Dictionary<any>): Observable<ResponseContainer<BaseModel>> {
         return this.http
             .get(`${this.url}/${id}`, {params: params})
             .map((response: Response) => response.json());

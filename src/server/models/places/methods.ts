@@ -40,7 +40,7 @@ const scopes: any = {
     }
 }
 
-function baseFormat(instance: any, date: string): any {
+function baseFormat(instance: any, date: number): any {
     return {
         id: instance.id,
         name: instance.name,
@@ -59,25 +59,25 @@ function baseFormat(instance: any, date: string): any {
     };
 }
 
-function checkOpen(workSchedule ? : any, date ? : string) {
+function checkOpen(openingHours ? : any, date ? : number) {
     console.log(moment().format())
     let checkDate, checkDateDay, checkDateDayNumber, openAt, closeAt;
-    if (!workSchedule || !date) {
+    if (!openingHours || !date) {
         return false;
     }
 
-    checkDate = moment(date).utc();
+    checkDate = moment.unix(date).utc();
     checkDateDayNumber = checkDate.isoWeekday();
-    checkDateDay = workSchedule.openingHours[checkDateDayNumber];
+    checkDateDay = openingHours.workSchedule[checkDateDayNumber];
 
     if (!checkDateDay) {
         return false;
     }
 
-    checkDate = checkDate.utcOffset(workSchedule.timeZoneOffset);
-    openAt = moment(checkDateDay.openAt, "HH:mm").utc().utcOffset(workSchedule.timeZoneOffset);
-    closeAt = moment(checkDateDay.closeAt, "HH:mm").utc().utcOffset(workSchedule.timeZoneOffset);
-
+    checkDate = checkDate.utcOffset(openingHours.timeZoneOffset);
+    openAt = moment(checkDateDay.openAt, "HH:mm").utc().utcOffset(openingHours.timeZoneOffset);
+    closeAt = moment(checkDateDay.closeAt, "HH:mm").utc().utcOffset(openingHours.timeZoneOffset);
+    
     return timeLessThenEqual(openAt, checkDate) && timeGreateThenEqual(closeAt, checkDate);
 
     function timeLessThenEqual(first: Moment, second: Moment) {

@@ -27,7 +27,9 @@
       "../node_modules/jquery/dist/jquery.js",
       "../node_modules/metismenu/dist/metisMenu.js",
       "../node_modules/bootstrap/dist/js/bootstrap.js",
-      "vendor/pace/pace.min.js"
+      "vendor/pace/pace.min.js",
+      "../node_modules/moment/min/moment.min.js",
+      "../node_modules/moment-timezone/builds/moment-timezone.min.js"
     ],
     "environmentSource": "environments/environment.ts",
     "environments": {
